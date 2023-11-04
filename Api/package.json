@@ -1,7 +1,7 @@
 {
-  "name": "library",
+  "name": "api",
   "version": "1.0.0",
-  "description": "The current project is intended to be a virtual library.",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
