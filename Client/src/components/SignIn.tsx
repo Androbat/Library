@@ -14,29 +14,39 @@ function SignIn() {
     setPwd(target.value);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  } 
+
   return (
     <div className="form_container">
-      <form action="">
+      <form action="" onSubmit={handleSubmit}>
         <h2>Sign in</h2>
-        <div className="auth_form--input">
+        <div className="auth_form--input" style={{display: 'flex', flexDirection: "column"}}>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
             placeholder="John@cooper.com"
             name="email"
+            id="email"
             value={email}
             onChange={emailChange}
           />
         </div>
 
-        <div className="auth_form--input">
+        <div className="auth_form--input" style={{display: 'flex', flexDirection: "column"}}>
+          <label htmlFor="pwd">Password:</label>
           <input
             type="password"
             placeholder="Password"
             value={pwd}
             name="password"
+            id="pwd"
             onChange={pwdChange}
           />
         </div>
+        <button>Sign in</button>
+
       </form>
     </div>
   );
