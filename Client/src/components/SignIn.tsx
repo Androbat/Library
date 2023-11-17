@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { User, firebaseSignIn } from "../firebase/firebaseSignin";
+import Swal from "sweetalert2";
 
 function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [pwd, setPwd] = useState<string>("");
+  // for now user type this must be a context or stored in a store, sustand or redux...
+  const [user,setUser] = useState<User | null>(null)
 
   const emailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
@@ -14,8 +18,27 @@ function SignIn() {
     setPwd(target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    console.log('test');
+    if(!email || !pwd){
+     return Swal.fire("Auth", "All fields must be completed!");
+
+    }
+   try {
+    const userData: User = await firebaseSignIn(email, pwd) 
+    setUser(userData)
+    console.log(user, userData);
+    setEmail('')
+    setPwd('')
+   } catch (err: unknown) {
+    if (err.code === "auth/user-not-found") {
+    return  Swal.fire("Auth", "User not found");
+    } else if (err.code === "auth/wrong-password") {
+     return Swal.fire("Auth", "Wrong email or password");
+    }
+    
+   } 
   } 
 
   return (

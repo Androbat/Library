@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { firebaseSignUp, User } from "../firebase/firebaseSignin";
+import Swal from "sweetalert2";
+
+
 
 function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [pwd, setPwd] = useState<string>("");
   const [confPwd, setConfPwd] = useState<string>("");
+
+  // for now user type this must be a context or stored in a store, sustand or redux...
+  const [user, setUser] = useState<User | null>(null);
+  
 
   const emailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
@@ -26,8 +34,29 @@ function SignIn() {
     setConfPwd(target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (!email || !pwd || !name) {
+      return Swal.fire("Auth", "All fields must be completed!");
+    }
+
+    if (pwd !== confPwd) {
+      return Swal.fire("Auth", "Passwords must be equal!");
+    }
+    try {
+      const userData: User = await firebaseSignUp(email, pwd, name);
+      setUser(userData);
+      console.log(user);
+      setName("");
+      setEmail("");
+      setPwd("");
+      setConfPwd("");
+    } catch (err: unknown) {
+      if (err.code === "auth/email-already-exists") {
+       return Swal.fire("Auth", "Email already exist");
+      }
+    }
   }
 
   return (
