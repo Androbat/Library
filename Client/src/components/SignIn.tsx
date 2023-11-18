@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { User, firebaseSignIn } from "../firebase/firebaseSignin";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const [email, setEmail] = useState<string>("");
@@ -68,7 +69,12 @@ function SignIn() {
             onChange={pwdChange}
           />
         </div>
+        <div>
         <button>Sign in</button>
+        <p>
+            Need an account? <Link to="/auth/signup">Sign up</Link>
+          </p>
+        </div>
 
       </form>
     </div>
