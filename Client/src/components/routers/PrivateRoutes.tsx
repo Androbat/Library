@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 type PrivateProps = {
   isAuthenticated: boolean;
-  redirectTo: string;
+  redirectTo?: string;
 };
 
 const PrivateRoutes: React.FC<PrivateProps> = ({
