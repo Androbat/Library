@@ -1,17 +1,19 @@
-import { ReactNode } from "react";
-
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 type PrivateProps = {
   isAuthenticated: boolean;
-  children: ReactNode;
+  redirectTo?: string;
 };
 
 const PrivateRoutes: React.FC<PrivateProps> = ({
   isAuthenticated,
-  children,
+  redirectTo = "/auth/signin",
 }) => {
-  return isAuthenticated ? children : <Navigate to="signin" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoutes;
