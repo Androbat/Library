@@ -9,6 +9,8 @@ const PrivateRoutes: React.FC<PrivateProps> = ({
   isAuthenticated,
   redirectTo = "/auth/signin",
 }) => {
+
+
   if (!isAuthenticated) {
     return <Navigate to={redirectTo} replace />;
   }
