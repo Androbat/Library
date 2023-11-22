@@ -1,22 +1,13 @@
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
+import { userStore } from "../store/appStore";
 
 const Hero = () => {
+  const {user} = userStore()
   return (
     <div>
       <header>
-        <nav className="nav_container">
-          <div>
-            <h3>Library</h3>
-          </div>
-          <div>
-            <Link to={"/auth/signin"} className="log_btn">
-              Sign in
-            </Link>
-            <Link to={"/auth/signup"} className="sign_btn">
-              Sign up
-            </Link>
-          </div>
-        </nav>
+       <Navbar isAuthenticated={!!user}/>
       </header>
 
       <main className="main_container">
