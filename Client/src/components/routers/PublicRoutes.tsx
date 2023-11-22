@@ -8,7 +8,6 @@ const PublicRoutes: React.FC<PublicProps> = ({
   isAuthenticated,
 
 }) => {
-  console.log(isAuthenticated);
 
   return isAuthenticated ? <Navigate to="/library" replace /> : <Outlet />;
 };

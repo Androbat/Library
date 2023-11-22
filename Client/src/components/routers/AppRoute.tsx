@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Library from "../../Library";
+import LibraryApp from "../../LibraryApp";
 import SignIn from "../SignIn";
 import SignUp from "../SignUp";
 import Hero from "../Hero";
@@ -7,6 +7,7 @@ import PublicRoutes from "./PublicRoutes";
 import PrivateRoutes from "./PrivateRoutes";
 import AuthRoutes from "./AuthRoutes";
 import { userStore } from "../../store/appStore";
+import LibraryScreen from "../library/LibraryScreen";
 const AppRouter = () => {
   const { user } = userStore()
 
@@ -17,9 +18,9 @@ const AppRouter = () => {
       children: [{ index: true, element: <Hero /> }],
     },
     {
-      path: "library",
+      path: "/",
       element: <PrivateRoutes isAuthenticated={!!user} />,
-      children: [{ index: true, element: <Library /> }],
+      children: [{ path: 'library', element: <LibraryApp/>, children:[{index: true,element: <LibraryScreen/>}]}],
     },
     {
       path: "auth",
