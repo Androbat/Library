@@ -7,4 +7,4 @@ const BookModel = new Schema({
     publicationYear: Number
 });
 
-module.exports = mongoose.model('books.books', BookModel);
+module.exports = mongoose.model('Book', BookModel);
