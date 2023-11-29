@@ -6,10 +6,14 @@ const connectDB = require("./db");
 
 // Routes
 const bookRoutes = require('./routers/bookRouter');
+const userRoutes = require('./routers/userRouter');
+
 
 // Add the bodyParser middelware to the express application
 app.use(express.json());
 app.use('/book', bookRoutes);
+app.use('/user', userRoutes);
+
 
 
 // Data base connection
