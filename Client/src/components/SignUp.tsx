@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { firebaseSignUp, User } from "../firebase/firebaseSignin";
+import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
+import { userStore } from "../store/appStore";
 
 function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [pwd, setPwd] = useState<string>("");
   const [confPwd, setConfPwd] = useState<string>("");
+
+  const { setUser } = userStore();
+  const navigate = useNavigate();
 
   const emailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
@@ -26,17 +33,43 @@ function SignIn() {
     setConfPwd(target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!email || !pwd || !name) {
+      return Swal.fire("Auth", "All fields must be completed!");
+    }
+
+    if (pwd !== confPwd) {
+      return Swal.fire("Auth", "Passwords must be equal!");
+    }
+    try {
+      const userData: User = await firebaseSignUp(email, pwd, name);
+      setUser(userData);
+
+      setName("");
+      setEmail("");
+      setPwd("");
+      setConfPwd("");
+      
+      navigate("/library");
+    } catch (err: unknown) {
+      if (err.code === "auth/email-already-exists") {
+        return Swal.fire("Auth", "Email already exist");
+      }
+    }
+  };
 
   return (
     <div className="form_container">
       <form action="" onSubmit={handleSubmit}>
         <h2>Sign up</h2>
 
-        <div className="auth_form--input" style={{display: 'flex', flexDirection: "column"}}>
-        <label htmlFor="name">Name:</label>
+        <div
+          className="auth_form--input"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <label htmlFor="name">Name:</label>
 
           <input
             type="text"
@@ -48,8 +81,11 @@ function SignIn() {
           />
         </div>
 
-        <div className="auth_form--input" style={{display: 'flex', flexDirection: "column"}}>
-        <label htmlFor="email">Email:</label>
+        <div
+          className="auth_form--input"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <label htmlFor="email">Email:</label>
 
           <input
             type="email"
@@ -61,8 +97,11 @@ function SignIn() {
           />
         </div>
 
-        <div className="auth_form--input" style={{display: 'flex', flexDirection: "column"}}>
-        <label htmlFor="pwd">Password:</label>
+        <div
+          className="auth_form--input"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <label htmlFor="pwd">Password:</label>
 
           <input
             type="password"
@@ -74,8 +113,11 @@ function SignIn() {
           />
         </div>
 
-        <div className="auth_form--input" style={{display: 'flex', flexDirection: "column"}}>
-        <label htmlFor="confPwd">Confirm password:</label>
+        <div
+          className="auth_form--input"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <label htmlFor="confPwd">Confirm password:</label>
 
           <input
             type="password"
@@ -86,7 +128,12 @@ function SignIn() {
             onChange={confPwdChange}
           />
         </div>
-        <button>Sign up</button>
+        <div>
+          <button>Sign up</button>
+          <p>
+            Already have an account? <Link to="/auth/signin">Sign in</Link>
+          </p>
+        </div>
       </form>
     </div>
   );
