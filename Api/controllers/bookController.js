@@ -4,7 +4,7 @@ const BookModel = require('../models/BookModel');
 async function createBook(req, res) {
     const { bookName, bookDescription, publicationYear } = req.body;
     if (!bookName || !bookDescription || !publicationYear) {
-        return res.status(400).send({ message: "Write the book content" })
+        return res.status(statusCodes.BAD_REQUEST_ERROR).send({ message: "Write the book content" })
     }
 
     const book = new BookModel({
@@ -19,7 +19,7 @@ async function createBook(req, res) {
             book: data
         })
     }).catch(err => {
-        res.status(500).send({
+        res.status(statusCodes.INTERNAL_SERVER_ERROR).send({
             message: err.message || "Error occurred creating book"
         })
     })
@@ -30,9 +30,10 @@ async function createBook(req, res) {
 async function getBooks(req, res) {
     try {
         const books = await BookModel.find();
-        res.status(200).json(books);
+        if (!books) return res.status(statusCodes.NOT_FOUND_ERROR).send({ message: "Book not found"});
+        return res.status(statusCodes.OK).json(books);
     } catch (err) {
-        res.status(404).json({ message: err.message });
+        res.json({ message: err.message });
     }
 }
 
@@ -41,7 +42,7 @@ async function getBookById(req, res) {
     const bookById = req.params.id;
     try {
         const book = await BookModel.findById(bookById);
-        res.status(200).json(book);
+        res.status(statusCodes.OK).json(book);
     } catch (error) {
         res.status(404).json({ message: error.message || "Book does not exist" });
     }
@@ -51,7 +52,7 @@ async function getBookById(req, res) {
 // Update book controller
 async function updateBook(req, res) {
     if (!req.body) {
-        res.status(400).send({
+        res.status(statusCodes.BAD_REQUEST_ERROR).send({
             message: "No data to update"
         });
     }
@@ -60,36 +61,32 @@ async function updateBook(req, res) {
 
     await BookModel.findByIdAndUpdate(bookId, req.body, { useFindAndModify: false }).then(data => {
         if (!data) {
-            res.status(404).send({
+            res.status(statusCodes.NOT_FOUND_ERROR).send({
                 message: `Book not found.`
             });
         } else {
             res.send({ message: "Book updated successfully." })
         }
     }).catch(err => {
-        res.status(500).send({
+        res.status(statusCodes.INTERNAL_SERVER_ERROR).send({
             message: err.message
         });
     });
 }
 
 async function deleteBook(req, res) {
-    const bookToRemoveById = req.body.id;
-    await BookModelModel.findByIdAndRemove(bookToRemoveById).then(data => {
-        if (!data) {
-            res.status(404).send({
-                message: `Book not found.`
-            });
+    const id = req.params.id;
+    try {
+        const bookExist = await Book.findById(id);
+        if (!bookExist) {
+            return res.status(statusCodes.NOT_FOUND_ERROR).send({ message: "Book does not exist" });
         } else {
-            res.send({
-                message: "Book deleted successfully!"
-            });
+            await Book.findByIdAndDelete(id);
+            return res.status(statusCodes.OK).send({ message: "Book deleted successfully" });
         }
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message
-        });
-    });
+    } catch (err) {
+        return res.status(statusCodes.INTERNAL_SERVER_ERROR).send({ message: err.message });
+    }
 }
 
 module.exports = {

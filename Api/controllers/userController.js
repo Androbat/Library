@@ -1,32 +1,31 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const validator = require('validator');
+const isValidEmail = require('../helpers/validation');
+const statusCode = require('../helpers/statusCodes');
 
 const User = require('../models/UserModel');
 
 
 async function createUser(req, res){
     const id = req.params.id;
+    const salt = 10;
     const { name, email, password } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 10)
+    const hashedPassword = bcrypt.hashSync(password, salt)
 
-    const isEmailFormat = (userEmail) => {
-        return validator.isEmail(userEmail);
-    }
 
     if (!name || !email || !password) {
-        return res.status(400).json({ message: "Fields should not be empty" });
+        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: "Fields should not be empty" });
     }
 
  
-    if (!isEmailFormat(email)) {
-        return res.status(400).json({ messgae: "Invalid email format"})
+    if (!isValidEmail(email)) {
+        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ messgae: "Invalid email format"})
     }
     
 
     const userExist = await User.findOne({ email }); 
     if (userExist) {
-        return res.status(409).json({ message: "User already exists" });
+        return res.status(statusCodes.CONFLICT_ERROR).json({ message: "User already exists" });
     }
 
     let user = await new User({
@@ -36,13 +35,13 @@ async function createUser(req, res){
         password: hashedPassword,
     }).save();
 
-    return res.status(201).json(user);
+    return res.status(statusCodes.OK).json(user);
 };
 
 
 async function getUsers(req, res){
     const users = await User.find();
-    if (!users) return res.status(404).json({ message: "User not found." });
+    if (!users) return res.status(statusCodes.NOT_FOUND_ERROR).json({ message: "User not found." });
     
     return res.send(users);
 }
@@ -50,7 +49,7 @@ async function getUsers(req, res){
 async function getUserById(req, res) {
     const { id } = req.params;
     const user = await User.findById(id);
-    if (!user) return res.status(404).json({ message: "User does not exist." });
+    if (!user) return res.status(statusCodes.NOT_FOUND_ERROR).json({ message: "User does not exist." });
 
     return res.send(user);
 }
@@ -60,7 +59,7 @@ async function getUserById(req, res) {
 // Update book controller
 async function updateUser(req, res) {
     if (!req.body) {
-        res.status(400).send({
+        res.status(statusCodes.BAD_REQUEST_ERROR).send({
             message: "No data to update"
         });
         return;
@@ -90,14 +89,14 @@ async function updateUser(req, res) {
         const data = await BookModel.findByIdAndUpdate(userId, updates, { useFindAndModify: false });
 
         if (!data) {
-            res.status(404).send({
+            res.status(statusCodes.NOT_FOUND_ERROR).send({
                 message: "No user found."
             });
         } else {
             res.send({ message: "User updated successfully." });
         }
     } catch (err) {
-        res.status(500).send({
+        res.status(statusCode.BAD_REQUEST_ERROR).send({
             message: err.message
         });
     }
@@ -105,24 +104,20 @@ async function updateUser(req, res) {
 
 
 
-// Check delete user function
+// Does not want to delete the user
 async function deleteUser(req, res) {
-    const { id } = req.params;
-    await User.findByIdAndRemove(id).then(data => {
-        if (!data) {
-            res.status(404).send({
-                message: `User not found.`
-            });
+    const id = req.params.id;
+    try {
+        const existUser = await User.findById(id);
+        if (!existUser) {
+            return res.status(statusCodes.NOT_FOUND_ERROR).send({ message: "User does not exist" });
         } else {
-            res.send({
-                message: "User deleted successfully!"
-            });
+            await User.findByIdAndDelete(id);
+            return res.status(statusCodes.OK).send({ message: "User deleted successfully" });
         }
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message
-        });
-    });
+    } catch (err) {
+        return res.status(statusCodes.INTERNAL_SERVER_ERROR).send({ message: err.message });
+    }
 }
 
 
