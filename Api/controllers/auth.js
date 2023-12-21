@@ -16,7 +16,7 @@ async function login(req, res, next) {
             return res.status(statusCodes.NOT_FOUND_ERROR).json({ message: "User not found" });
         }
 
-        // Check the validation
+        
         if (!isValidPassword) {
             return res.status(statusCodes.CONFLICT_ERROR).json({ message: "Check either your email or password" });
         }
