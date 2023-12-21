@@ -1,16 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const isValidEmail = require('../helpers/validation');
-const statusCode = require('../helpers/statusCodes');
+const { isValidEmail } = require('../helpers/validation');
+const { statusCodes } = require('../helpers/statusCodes');
 
 const User = require('../models/UserModel');
 
 
 async function createUser(req, res){
-    const id = req.params.id;
     const salt = 10;
-    const { name, email, password } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, salt)
+    let { name, email, password } = req.body;
+    let hashedPassword = bcrypt.hashSync(password, salt);
 
 
     if (!name || !email || !password) {
@@ -29,7 +28,6 @@ async function createUser(req, res){
     }
 
     let user = await new User({
-        id: id,
         name: name,
         email: email,
         password: hashedPassword,
@@ -56,7 +54,7 @@ async function getUserById(req, res) {
 
 
 
-// Update book controller
+
 async function updateUser(req, res) {
     if (!req.body) {
         res.status(statusCodes.BAD_REQUEST_ERROR).send({
@@ -68,16 +66,16 @@ async function updateUser(req, res) {
     const allowedFields = ['username', 'password'];
     const updates = {};
 
-    // Check of the avaible updates
+  
     allowedFields.forEach((field) => {
         if (req.body[field] !== undefined) {
             updates[field] = req.body[field];
         }
     });
 
-    // If there's no updates to be done
+
     if (Object.keys(updates).length === 0) {
-        res.status(400).send({
+        res.status(statusCodes.BAD_REQUEST_ERROR).send({
             message: "No valid fields to update"
         });
         return;

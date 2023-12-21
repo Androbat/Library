@@ -7,12 +7,16 @@ const connectDB = require("./db");
 // Routes
 const bookRoutes = require('./routers/bookRouter');
 const userRoutes = require('./routers/userRouter');
-
+const authRoute = require('./routers/auth')
 
 // Add the bodyParser middelware to the express application
 app.use(express.json());
+
 app.use('/book', bookRoutes);
 app.use('/user', userRoutes);
+
+// Authentication route
+app.use('/auth', authRoute);
 
 
 
