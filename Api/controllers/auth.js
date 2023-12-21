@@ -10,13 +10,13 @@ async function login(req, res, next) {
 
     try {
         const user = await User.findOne({ email });
-        const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!user) {
             return res.status(statusCodes.NOT_FOUND_ERROR).json({ message: "User not found" });
         }
 
-        
+        const isValidPassword = await bcrypt.compare(password, user.password);
+
         if (!isValidPassword) {
             return res.status(statusCodes.CONFLICT_ERROR).json({ message: "Check either your email or password" });
         }
@@ -28,9 +28,9 @@ async function login(req, res, next) {
         res.json({ token });
     } catch (error) {
         next(error);
-
     }
 }
+
 
 
 module.exports = { login }
