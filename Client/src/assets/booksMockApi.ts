@@ -99,6 +99,36 @@ const books = [
     author: "author 10",
     id: "10",
   },
+  {
+    createdAt: "2023-11-20T20:56:49.663Z",
+    title: "title 11",
+    cover: "cover 11",
+    pages: 4,
+    takeaways: "takeaways 10",
+    status: true,
+    author: "author 10",
+    id: "11",
+  },
+  {
+    createdAt: "2023-11-20T20:56:49.663Z",
+    title: "title 12",
+    cover: "cover 12",
+    pages: 4,
+    takeaways: "takeaways 10",
+    status: true,
+    author: "author 10",
+    id: "12",
+  },
+  {
+    createdAt: "2023-11-20T20:56:49.663Z",
+    title: "title 13",
+    cover: "cover 13",
+    pages: 4,
+    takeaways: "takeaways 10",
+    status: true,
+    author: "author 10",
+    id: "13",
+  },
 ];
 
 export default books;

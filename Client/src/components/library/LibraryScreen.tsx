@@ -12,8 +12,7 @@ const LibraryScreen = () => {
 
   return (
     <>
-    <Navbar isAuthenticated={!!user}/>
-    <div className="library__screen-container" style={{display:"flex"}}>
+    <div className="library__screen-container">
       <Sidebar />
 
 {/* improve */}
@@ -21,7 +20,9 @@ const LibraryScreen = () => {
         if(book.id === activeBook) {
           return <LibraryBook {...book}/>
         }
-      }) : <NothingSelected/>} 
+      }) : <div className="nothing_selected">
+        <NothingSelected/>
+        </div>} 
     </div>
     </>
   );

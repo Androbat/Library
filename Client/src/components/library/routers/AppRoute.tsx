@@ -1,13 +1,13 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import LibraryApp from "../../LibraryApp";
-import SignIn from "../SignIn";
-import SignUp from "../SignUp";
-import Hero from "../Hero";
+import LibraryApp from "../../../LibraryApp";
+import SignIn from "../../SignIn";
+import SignUp from "../../SignUp";
+import Hero from "../../Hero";
 import PublicRoutes from "./PublicRoutes";
 import PrivateRoutes from "./PrivateRoutes";
 import AuthRoutes from "./AuthRoutes";
-import { userStore } from "../../store/appStore";
-import LibraryScreen from "../library/LibraryScreen";
+import { userStore } from "../../../store/appStore";
+import LibraryScreen from "../LibraryScreen";
 const AppRouter = () => {
   const { user } = userStore()
 
