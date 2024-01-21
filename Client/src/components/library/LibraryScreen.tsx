@@ -20,9 +20,9 @@ const LibraryScreen = () => {
         if(book.id === activeBook) {
           return <LibraryBook {...book}/>
         }
-      }) : <div className="nothing_selected">
+      }) : 
         <NothingSelected/>
-        </div>} 
+        } 
     </div>
     </>
   );
