@@ -1,26 +1,36 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const connectDB = require("./db");
+const morgan = require("morgan");
+const { authorizeRequest } = require("./middleware/auth.mid");
+const { login } = require("./controllers/auth");
+const { createUser } = require("./controllers/auth")
 
 // Routes
 const bookRoutes = require('./routers/bookRouter');
 const userRoutes = require('./routers/userRouter');
-const authRoute = require('./routers/auth')
 
-// Add the bodyParser middelware to the express application
+
+
+
+
 app.use(express.json());
+app.use(morgan('dev'));
 
-app.use('/book', bookRoutes);
+
 app.use('/user', userRoutes);
 
-// Authentication route
-app.use('/auth', authRoute);
 
 
 
-// Data base connection
+app.use('/api', authorizeRequest, bookRoutes);
+
+app.post('/login', login);
+app.post('/signin', createUser);
+
+
+
 connectDB();
 
 app.listen(port, () => {

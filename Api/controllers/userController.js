@@ -1,40 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { isValidEmail } = require('../helpers/validation');
+const { isValidEmail, createToken } = require('../helpers/validation');
 const { statusCodes } = require('../helpers/statusCodes');
 
 const User = require('../models/UserModel');
-
-
-async function createUser(req, res){
-    const salt = 10;
-    let { name, email, password } = req.body;
-    let hashedPassword = bcrypt.hashSync(password, salt);
-
-
-    if (!name || !email || !password) {
-        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: "Fields should not be empty" });
-    }
-
- 
-    if (!isValidEmail(email)) {
-        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ messgae: "Invalid email format"})
-    }
-    
-
-    const userExist = await User.findOne({ email }); 
-    if (userExist) {
-        return res.status(statusCodes.CONFLICT_ERROR).json({ message: "User already exists" });
-    }
-
-    let user = await new User({
-        name: name,
-        email: email,
-        password: hashedPassword,
-    }).save();
-
-    return res.status(statusCodes.OK).json(user);
-};
 
 
 async function getUsers(req, res){
@@ -102,7 +71,7 @@ async function updateUser(req, res) {
 
 
 
-// Does not want to delete the user
+
 async function deleteUser(req, res) {
     const id = req.params.id;
     try {
@@ -120,7 +89,6 @@ async function deleteUser(req, res) {
 
 
 module.exports = {
-    createUser,
     getUsers,
     getUserById,
     updateUser,

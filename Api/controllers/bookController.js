@@ -1,3 +1,4 @@
+const { statusCodes } = require('../helpers/statusCodes');
 const BookModel = require('../models/BookModel');
 
 // Create book controller
@@ -30,10 +31,16 @@ async function createBook(req, res) {
 async function getBooks(req, res) {
     try {
         const books = await BookModel.find();
-        if (!books) return res.status(statusCodes.NOT_FOUND_ERROR).send({ message: "Book not found"});
-        return res.status(statusCodes.OK).json(books);
+
+        if (!books){
+            return res.status(statusCodes.NOT_FOUND_ERROR).send({ message: "Book not found"});
+        }
+
+        return res.status(statusCodes.OK).json({ books });
+        
     } catch (err) {
-        res.json({ message: err.message });
+
+        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: err.message });
     }
 }
 
