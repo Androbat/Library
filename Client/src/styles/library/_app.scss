@@ -1,0 +1,115 @@
+.app_container {
+  height: 100vh;
+}
+
+.nav_container {
+  width: 100%;
+  background-color: lighten($color: $secondary, $amount: 10);
+  border-radius: 0 0 8px 8px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sign_out--btn {
+  text-decoration: none;
+  color: $text;
+
+  transition: all 0.8s ease-in-out;
+
+  &:hover {
+    color: $background;
+  }
+}
+
+.library__screen-container {
+  display: flex;
+}
+
+.library__book {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  background-color: lighten($color: $primary, $amount: 12);
+}
+
+.library__book-title input,
+.library__book-author input,
+.library__book-pages,
+textArea {
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 10px 0;
+}
+
+.library__sidebar-userinfo {
+  padding: 10px;
+}
+
+.book_form {
+  background-color: lighten($color: $secondary, $amount: 10);
+  border-radius: 6px;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.book_form--input {
+  margin: 10px 0;
+}
+
+.book_form--input input {
+  width: 100%;
+  background-color: lighten($color: $secondary, $amount: 20);
+  border: none;
+  border-radius: 6px;
+  padding: 5px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.checkbox {
+  margin-left: 5px;
+}
+.book_form-btn {
+  margin-top: 5px;
+  background-color: lighten($color: $accent, $amount: 10);
+  border-radius: 6px;
+  border: none;
+  padding: 6px;
+  color: $text;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lighten($color: $accent, $amount: 5);
+  }
+  &:active {
+    background-color: lighten($color: $accent, $amount: 2);
+  }
+}
+
+.library__book-list--container {
+  margin-top: 5px;
+  height: 345px;
+  overflow-y: scroll;
+}
+
+.library__book-list--body {
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.8s ease-in-out;
+  &:hover {
+    background-color: lighten($color: $secondary, $amount: 10);
+  }
+}
+
+.nothing_selected {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,44 @@
+.form_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(238, 238, 238);
+}
+
+.form {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: plum;
+    color: rgb(239, 239, 239);
+}
+
+
+.auth_form--input {
+    margin: 10px 0;
+}
+
+.auth_form--input input{
+    padding: 5px;
+    border-radius:6px;
+    border: none;
+    outline: none;
+}
+
+.form_btn {
+    margin: 5px 0;
+    background-color: palevioletred;
+    border-radius:6px;
+    border: none;
+    padding: 6px;
+    color: rgb(239, 239, 239);
+    font-weight: bold ;
+    cursor: pointer; 
+
+    &:hover {
+        background-color: rgb(218, 100, 139);
+    }
+    &:active {
+        background-color: rgb(203, 78, 120);
+    }
+}

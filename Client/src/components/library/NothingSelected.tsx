@@ -1,6 +1,9 @@
 const NothingSelected = () => {
   return (
-    <div>Select a book</div>
+    <div className="nothing_selected">
+    <h2>Select a book</h2>
+    </div> 
+
   )
 }
 
