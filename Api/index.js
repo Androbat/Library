@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 
-app.use('/user', userRoutes);
+app.use('/user', authorizeRequest, userRoutes);
 
 
 
