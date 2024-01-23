@@ -12,8 +12,6 @@ const { login } = require("../controllers/auth");
 
 router.get("/", getUsers);
 router.get("/:id", getUserById);
-router.post("/", createUser);
-router.post("/login", login);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 
