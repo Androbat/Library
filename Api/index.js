@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const { authorizeRequest } = require("./middleware/auth.mid");
 const { login } = require("./controllers/auth");
 const { createUser } = require("./controllers/auth")
+const bodyParser = require("body-parser");
 
 // Routes
 const bookRoutes = require('./routers/bookRouter');

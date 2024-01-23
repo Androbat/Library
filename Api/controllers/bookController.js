@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 const { statusCodes } = require('../helpers/statusCodes');
 const BookModel = require('../models/BookModel');
 
@@ -103,14 +102,4 @@ module.exports = {
     getBookById,
     updateBook,
     deleteBook
-=======
-// Create book
-// update book
-// Read - get
-// Delete book
-const BookModel = require('../models/BookModel');
-
-function createBook(req, res){
-    
->>>>>>> Stashed changes
 }
