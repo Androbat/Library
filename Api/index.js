@@ -1,7 +1,7 @@
 
 const express = require("express");
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 const connectDB = require("./db");
 const morgan = require("morgan");
 const { authorizeRequest } = require("./middleware/auth.mid");
@@ -14,7 +14,7 @@ const bookRoutes = require('./routers/bookRouter');
 const userRoutes = require('./routers/userRouter');
 
 
-
+connectDB();
 
 
 app.use(express.json());
@@ -26,14 +26,14 @@ app.use('/user', authorizeRequest, userRoutes);
 
 
 
-app.use('/api', authorizeRequest, bookRoutes);
+app.use('/api/book', authorizeRequest, bookRoutes);
 
 app.post('/login', login);
 app.post('/signin', createUser);
 
 
 
-connectDB();
+
 
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -47,5 +47,5 @@ app.get('/', (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log("Server is listening on port 3000");
+    console.log(`Server is listening on port ${PORT}`);
 });

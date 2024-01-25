@@ -1,8 +1,8 @@
 // routes.js
 const express = require("express");
 const router = express.Router();
-const { getUsers, getUserById, createUser, updateUser, deleteUser } = require('../controllers/userController');
-const { authorizeRequest } = require("../middleware/auth.mid")
+const { getUsers, getUserById, updateUser, deleteUser } = require('../controllers/userController');
+
 
 
 router.get('/', getUsers);

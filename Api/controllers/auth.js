@@ -7,38 +7,40 @@ const { createToken, isValidEmail } = require("../helpers/validation");
 
 
 
-async function createUser(req, res){
+async function createUser(req, res) {
     const salt = 10;
     let { name, email, password } = req.body;
     let hashedPassword = bcrypt.hashSync(password, salt);
 
+    try {
+        if (!name || !email || !password) {
+            return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: "Fields should not be empty" });
+        }
 
-    if (!name || !email || !password) {
-        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: "Fields should not be empty" });
-    }
+        if (!isValidEmail(email)) {
+            return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: "Invalid email format" });
+        }
 
- 
-    if (!isValidEmail(email)) {
-        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ messgae: "Invalid email format"})
-    }
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(statusCodes.CONFLICT_ERROR).json({ message: "User already exists" });
+        }
+
+        let createUser = await new User({
+            name: name,
+            email: email,
+            password: hashedPassword,
+        })
+
+        
+        createUser.save();
+        res.status(statusCodes.OK).json({ message: "User created successfully" });
     
 
-    const user = await User.findOne({ email }); 
-    if (user) {
-        return res.status(statusCodes.CONFLICT_ERROR).json({ message: "User already exists" });
+    } catch (err) {
+        return res.status(statusCodes.BAD_REQUEST_ERROR).json({ message: err.message });
     }
-
-    let createUser = await new User({
-        name: name,
-        email: email,
-        password: hashedPassword,
-    }).save();
-
-    const token = createToken(user);
-
-    res.status(statusCodes.OK).json(createUser);
-    res.send({ token })
-};
+}
 
 
 
