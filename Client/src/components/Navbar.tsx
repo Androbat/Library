@@ -9,19 +9,13 @@ const Navbar = ({ isAuthenticated }: Props) => {
   return (
     <nav
       className="nav_container"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "10px",
-      }}
     >
       <div>
         <h2 style={{ margin: 0 }}>Library</h2>
       </div>
       {isAuthenticated ? (
         <div>
-          <Link to={"/auth/signin"} className="sign_btn">
+          <Link to={"/auth/signin"} className="sign_out--btn">
             Log out
           </Link>
         </div>

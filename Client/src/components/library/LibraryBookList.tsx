@@ -7,7 +7,7 @@ const LibraryBookList = () => {
     setActiveBook(id);
   };
   return (
-    <div className="library__book-list--container" style={{ paddingTop: 10 }}>
+    <div className="library__book-list--container">
       {books.map((book) => {
         return (
           <div className="library__book-list--body" key={book.id}>
@@ -22,7 +22,7 @@ const LibraryBookList = () => {
                 {book.title}
               </p>
               <small className="library__book-info--author">
-                By {book.author}
+                Por {book.author}
               </small>
             </div>
           </div>

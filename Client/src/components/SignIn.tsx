@@ -46,7 +46,7 @@ function SignIn() {
 
   return (
     <div className="form_container">
-      <form action="" onSubmit={handleSubmit}>
+      <form action="" onSubmit={handleSubmit} className="form">
         <h2>Sign in</h2>
         <div
           className="auth_form--input"
@@ -78,7 +78,7 @@ function SignIn() {
           />
         </div>
         <div>
-          <button>Sign in</button>
+          <button className="form_btn">Sign in</button>
           <p>
             Need an account? <Link to="/auth/signup">Sign up</Link>
           </p>

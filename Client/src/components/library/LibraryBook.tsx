@@ -37,7 +37,7 @@ const LibraryBook: React.FC<LibraryBookProps> = ({
           {status === true ? "Read" : "Not read"}
         </div>
       </div>
-      <textarea name="takeaway" id="takeaway" value={takeaway}></textarea>
+      <textarea name="takeaway" className="textArea" id="takeaway" value={takeaway}></textarea>
 
       <div>
         <button>update</button>
