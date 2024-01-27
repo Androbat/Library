@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 
-app.use('/user', authorizeRequest, userRoutes);
+app.use('/api/user', authorizeRequest, userRoutes);
 
 
 

@@ -7,7 +7,8 @@ const User = require('../models/UserModel');
 
 
 async function getUsers(req, res){
-    const users = await User.find();
+    // Apparently .select(-password) would exclude password being sent
+    const users = User.find()
     if (!users) return res.status(statusCodes.NOT_FOUND_ERROR).json({ message: "User not found." });
     
     return res.send(users);
